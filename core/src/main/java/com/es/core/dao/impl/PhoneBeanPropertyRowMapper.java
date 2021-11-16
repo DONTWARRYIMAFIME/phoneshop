@@ -17,7 +17,7 @@ public class PhoneBeanPropertyRowMapper extends BeanPropertyRowMapper<Phone> {
             "JOIN phone2color ON colors.id = phone2color.colorId " +
             "WHERE phone2color.phoneId = :phoneId";
 
-    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     public PhoneBeanPropertyRowMapper(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
         super(Phone.class);
