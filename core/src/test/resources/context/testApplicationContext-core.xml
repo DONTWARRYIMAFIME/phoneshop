@@ -13,7 +13,7 @@
     <context:component-scan base-package="com.es.core"/>
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="org.h2.Driver"/>
-        <property name="url" value="jdbc:h2:~/phoneshop/db/h2"/>
+        <property name="url" value="jdbc:h2:~/phoneshop/test_db/h2"/>
         <property name="username" value="sa"/>
         <property name="password" value=""/>
     </bean>
@@ -25,6 +25,9 @@
     </bean>
     <bean id="phoneBeanPropertyRowMapper" class="com.es.core.dao.impl.PhoneBeanPropertyRowMapper">
         <constructor-arg name="namedParameterJdbcTemplate" ref="namedParameterJdbcTemplate"/>
+    </bean>
+    <bean id="stockBeanPropertyRowMapper" class="com.es.core.dao.impl.StockBeanPropertyRowMapper">
+        <constructor-arg name="phoneDao" ref="jdbcPhoneDao"/>
     </bean>
     <jdbc:initialize-database enabled="true" data-source="dataSource">
         <jdbc:script location="classpath:db/schema.sql"/>

@@ -1,20 +1,37 @@
 package com.es.phoneshop.web.controller;
 
+import com.es.core.model.cart.Cart;
 import com.es.core.service.CartService;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import com.es.phoneshop.web.controller.dto.CartDto;
+import com.es.phoneshop.web.controller.dto.PhoneDto;
+import com.es.phoneshop.web.controller.exception.InvalidFormatException;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
 
-@Controller
+@RestController
 @RequestMapping(value = "/ajaxCart")
 public class AjaxCartController {
     @Resource
     private CartService cartService;
 
-    @RequestMapping(method = RequestMethod.POST)
-    public void addPhone(Long phoneId, Long quantity) {
-        cartService.addPhone(phoneId, quantity);
+    @GetMapping
+    public CartDto getCart() {
+        Cart cart = cartService.getCart();
+        return new CartDto(cart.getTotalQuantity(), cart.getTotalPrice());
+    }
+
+    @PostMapping
+    public CartDto addPhone(@RequestBody @Valid PhoneDto phoneDto, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new InvalidFormatException();
+        }
+
+        cartService.addPhone(phoneDto.getId(), phoneDto.getQuantity());
+        Cart cart = cartService.getCart();
+
+        return new CartDto(cart.getTotalQuantity(), cart.getTotalPrice());
     }
 }

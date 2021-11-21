@@ -27,6 +27,9 @@
     <bean id="phoneBeanPropertyRowMapper" class="com.es.core.dao.impl.PhoneBeanPropertyRowMapper">
         <constructor-arg name="namedParameterJdbcTemplate" ref="namedParameterJdbcTemplate"/>
     </bean>
+    <bean id="stockBeanPropertyRowMapper" class="com.es.core.dao.impl.StockBeanPropertyRowMapper">
+        <constructor-arg name="phoneDao" ref="jdbcPhoneDao"/>
+    </bean>
     <jdbc:initialize-database enabled="${db.insertSchema}" data-source="dataSource">
         <jdbc:script location="classpath:db/schema.sql"/>
     </jdbc:initialize-database>
