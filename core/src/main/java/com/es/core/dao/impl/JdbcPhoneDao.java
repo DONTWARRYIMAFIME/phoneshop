@@ -41,7 +41,7 @@ public class JdbcPhoneDao extends JdbcAbstractDao<Phone> implements PhoneDao {
             "standByTimeHours = :standByTimeHours, bluetooth = :bluetooth, positioning = :positioning, " +
             "imageUrl = :imageUrl, description = :description WHERE id = :id";
 
-    private static final String SEARCH_QUERY_WITH_SORT = "SELECT * FROM phones " +
+    private static final String SEARCH_QUERY_SORT = "SELECT * FROM phones " +
             "JOIN stocks on phones.id = stocks.phoneId " +
             "WHERE stocks.stock > 0 AND phones.price IS NOT NULL " +
             "AND (LOWER(phones.brand) LIKE '%%%s%%' OR LOWER(phones.model) LIKE '%%%s%%') " +
@@ -56,10 +56,10 @@ public class JdbcPhoneDao extends JdbcAbstractDao<Phone> implements PhoneDao {
             "WHERE stocks.stock > 0 AND phones.price IS NOT NULL " +
             "ORDER BY %s %s OFFSET :offset limit :limit";
 
-    private static final String COUNT_WITH_QUERY = "SELECT COUNT(*) FROM phones AS p JOIN stocks AS s ON p.id = s.phoneId " +
+    private static final String GET_COUNT_QUERY = "SELECT COUNT(*) FROM phones AS p JOIN stocks AS s ON p.id = s.phoneId " +
             "WHERE s.stock > 0 AND p.price IS NOT NULL AND (lower(p.brand) LIKE :query " +
             "OR lower(p.model) LIKE :query)";
-    private static final String COUNT = "SELECT COUNT(*) FROM phones AS p JOIN stocks AS s ON p.id = s.phoneId " +
+    private static final String GET_COUNT = "SELECT COUNT(*) FROM phones AS p JOIN stocks AS s ON p.id = s.phoneId " +
             "WHERE s.stock > 0 AND p.price IS NOT NULL";
 
     private static final String INSERT_PHONE_COLORS = "INSERT INTO phone2color (phoneId, colorId) " +
@@ -87,7 +87,7 @@ public class JdbcPhoneDao extends JdbcAbstractDao<Phone> implements PhoneDao {
             String orderBy = searchStructure.getOrder() != null ? searchStructure.getOrder().toString() : null;
 
             if (!StringUtils.isNullOrEmpty(query) && !StringUtils.isNullOrEmpty(sortBy) && !StringUtils.isNullOrEmpty(orderBy)) {
-                sql = String.format(SEARCH_QUERY_WITH_SORT, query, query, sortBy, orderBy);
+                sql = String.format(SEARCH_QUERY_SORT, query, query, sortBy, orderBy);
             } else if (!StringUtils.isNullOrEmpty(sortBy) && !StringUtils.isNullOrEmpty(orderBy)) {
                 sql = String.format(SORT, sortBy, orderBy);
             } else if (!StringUtils.isNullOrEmpty(query)) {
@@ -118,7 +118,7 @@ public class JdbcPhoneDao extends JdbcAbstractDao<Phone> implements PhoneDao {
 
     @Override
     public long count(String query) {
-        String sql = StringUtils.isNullOrEmpty(query) ? COUNT : COUNT_WITH_QUERY;
+        String sql = StringUtils.isNullOrEmpty(query) ? GET_COUNT : GET_COUNT_QUERY;
 
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource("query", "%" + query + "%");
         return namedParameterJdbcTemplate.queryForObject(sql, sqlParameterSource, Long.class);

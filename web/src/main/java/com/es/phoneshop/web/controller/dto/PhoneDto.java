@@ -1,10 +1,12 @@
 package com.es.phoneshop.web.controller.dto;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 public class PhoneDto {
     @NotNull
     private Long id;
+    @Min(1)
     @NotNull
     private Long quantity;
 

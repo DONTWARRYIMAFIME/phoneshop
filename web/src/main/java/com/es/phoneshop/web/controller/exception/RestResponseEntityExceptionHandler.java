@@ -15,7 +15,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<String> handleProductNotFoundException() {
-        return new ResponseEntity<>("Product not found", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>("Product not found", HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(OutOfStockException.class)

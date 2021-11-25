@@ -2,7 +2,7 @@
 <%@attribute name="sortBy" required="true" %>
 <%@attribute name="orderBy" required="true" %>
 
-<c:url var="url" value="/productList/${page}">
+<c:url var="url" value="/productList">
     <c:if test="${not empty param.page}">
         <c:param name="page" value="${param.page}"/>
     </c:if>

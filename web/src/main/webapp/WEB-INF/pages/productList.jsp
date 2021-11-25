@@ -4,7 +4,7 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
-<tags:master pageTitle="Product List">
+<tags:page pageTitle="Product List">
   <div class="container mt-5">
     <div class="row">
       <div class="col">
@@ -65,7 +65,7 @@
             <td>${phone.model}</td>
             <td>
               <c:forEach var="color" items="${phone.colors}" varStatus="index">
-                ${color.code}
+                <c:out value="${color.code}"/>
                 <c:if test="${not index.last}">, </c:if>
               </c:forEach>
             </td>
@@ -88,4 +88,4 @@
       <tags:pagination currentPage="${page}" pagesNumber="${pages}"/>
     </c:if>
   </div>
-</tags:master>
+</tags:page>
