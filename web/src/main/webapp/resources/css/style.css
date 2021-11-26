@@ -1,3 +1,13 @@
+@import "nullstyle.css";
+
+#logo {
+    color: #000000;
+}
+
+#logo:hover {
+    color: #000000;
+}
+
 #image-col {
     width: 8%;
 }
@@ -7,7 +17,7 @@
 }
 
 #display-size-col {
-    width: 19%;
+    width: 24%;
 }
 
 #price-col, #quantity-col, #action-col {
@@ -22,7 +32,6 @@ div[id^="item-quantity-error-"] {
     color: red;
 }
 
-.footer {
-    background-color: black;
-    color: white;
+.error {
+    color: red;
 }

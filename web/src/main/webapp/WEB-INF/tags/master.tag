@@ -14,9 +14,11 @@
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 </head>
 <body class="product-list mt-2">
-<main>
-    <jsp:doBody/>
-</main>
-<script src="<c:url value="/resources/js/addToCart.js"/>"></script>
+<jsp:doBody/>
+<script>
+    const ajaxCartUrl = "<c:url value="/ajaxCart"/>";
+</script>
+<script src="<c:url value="/resources/js/cart.js"/>"></script>
+<script src="<c:url value="/resources/js/exceptionFormatter.js"/>"></script>
 </body>
 </html>

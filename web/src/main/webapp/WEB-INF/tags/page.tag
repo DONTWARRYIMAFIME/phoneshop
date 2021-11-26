@@ -2,8 +2,9 @@
 <%@ attribute name="pageTitle" required="true" %>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 
-<tags:header/>
 <tags:master pageTitle="${pageTitle}">
-    <jsp:doBody/>
+    <tags:header/>
+    <main>
+        <jsp:doBody/>
+    </main>
 </tags:master>
-<tags:footer/>

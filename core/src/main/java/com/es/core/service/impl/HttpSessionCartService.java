@@ -38,7 +38,7 @@ public class HttpSessionCartService implements CartService {
                 .map(CartItem::getQuantity)
                 .orElse(0L);
 
-        AddItemToCart(phone, quantity, inCartQuantity);
+        addItemToCart(phone, quantity, inCartQuantity);
     }
 
     @Override
@@ -48,7 +48,7 @@ public class HttpSessionCartService implements CartService {
             Long quantity = entry.getValue();
 
             Phone phone = phoneDao.get(phoneId).orElseThrow(() -> new EntityNotFoundException("Phone", phoneId));
-            AddItemToCart(phone, quantity, 0L);
+            addItemToCart(phone, quantity, 0L);
         }
     }
 
@@ -62,7 +62,7 @@ public class HttpSessionCartService implements CartService {
         return Optional.ofNullable(cart.getItems().get(phoneId));
     }
 
-    private void AddItemToCart(Phone phone, Long quantity, Long inCartQuantity) {
+    private void addItemToCart(Phone phone, Long quantity, Long inCartQuantity) {
         if (quantity <= 0) {
             throw new IllegalArgumentException("Quantity must be more than 0");
         }

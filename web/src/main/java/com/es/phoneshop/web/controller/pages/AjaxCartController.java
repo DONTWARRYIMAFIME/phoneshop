@@ -1,12 +1,16 @@
-package com.es.phoneshop.web.controller;
+package com.es.phoneshop.web.controller.pages;
 
 import com.es.core.model.cart.Cart;
 import com.es.core.service.CartService;
 import com.es.phoneshop.web.controller.dto.CartDto;
-import com.es.phoneshop.web.controller.dto.PhoneDto;
+import com.es.phoneshop.web.controller.dto.CartItemDto;
 import com.es.phoneshop.web.controller.exception.InvalidFormatException;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
@@ -24,7 +28,7 @@ public class AjaxCartController {
     }
 
     @PostMapping
-    public CartDto addPhone(@RequestBody @Valid PhoneDto phoneDto, BindingResult bindingResult) {
+    public CartDto addPhone(@RequestBody @Valid CartItemDto phoneDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new InvalidFormatException();
         }
