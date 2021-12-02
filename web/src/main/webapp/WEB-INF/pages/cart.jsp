@@ -8,7 +8,7 @@
             Cart
             <c:if test="${empty cart.items}">is empty</c:if>
         </h2>
-        <a href="<c:url value="/productList"/>" class="btn btn-outline-primary mt-3">
+        <a href="<c:url value="/product"/>" class="btn btn-outline-primary mt-3">
             Back to product list
         </a>
         <c:if test="${not empty cart.items}">
@@ -27,7 +27,7 @@
 
                 <tbody>
                 <form:form method="put" modelAttribute="CartItemListDto" id="update-cart-form">
-                    <c:forEach var="cartItem" items="${cart.items.values()}" varStatus="status">
+                    <c:forEach var="cartItem" items="${cart.items}" varStatus="status">
                         <tr id="cart-item-${cartItem.phone.id}">
                             <td>${cartItem.phone.brand}</td>
                             <td>
@@ -56,8 +56,10 @@
                                 </div>
                             </td>
                             <td class="text-center">
-                                <button type="button" id="delete-from-cart-${cartItem.phone.id}"
-                                        class="btn btn-outline-danger">
+                                <button id="delete-from-cart-${cartItem.phone.id}"
+                                        class="btn btn-outline-danger"
+                                        form="delete-cart-item-form"
+                                        formaction="<c:url value='/cart/${cartItem.phone.id}'/>" >
                                     Delete
                                 </button>
                             </td>
@@ -67,14 +69,13 @@
                 </tbody>
             </table>
 
-            <form:form method="delete" id="delete-cart-item-form">
-                <input type="hidden" name="id" id="delete-cart-item-id"/>
-            </form:form>
+            <form:form method="delete" id="delete-cart-item-form"/>
 
             <div class="text-right mt-4">
-                <button type="button" id="update-cart-btn" class="btn btn-outline-primary mr-2 pr-4 pl-4">Update</button>
-                <button type="button" class="btn btn-outline-primary pr-4 pl-4">Order</button>
+                <button form="update-cart-form" id="update-cart-btn" class="btn btn-outline-primary mr-2 pr-4 pl-4">Update</button>
+                <button class="btn btn-outline-primary pr-4 pl-4">Order</button>
             </div>
         </c:if>
     </div>
+    <script src="<c:url value="/resources/js/exceptionFormatter.js"/>"></script>
 </tags:page>

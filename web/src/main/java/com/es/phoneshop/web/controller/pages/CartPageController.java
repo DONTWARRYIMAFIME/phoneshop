@@ -4,9 +4,9 @@ import com.es.core.model.cart.Cart;
 import com.es.core.service.CartService;
 import com.es.phoneshop.web.controller.dto.CartItemDto;
 import com.es.phoneshop.web.controller.dto.CartItemListDto;
+import com.es.phoneshop.web.controller.validation.CartItemListDtoValidator;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.Validator;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +22,7 @@ public class CartPageController {
     @Resource
     private CartService cartService;
     @Resource
-    private Validator cartItemListDtoValidator;
+    private CartItemListDtoValidator cartItemListDtoValidator;
 
     @InitBinder("CartItemListDto")
     private void initBinder(WebDataBinder binder) {
@@ -41,7 +41,7 @@ public class CartPageController {
 
     @ModelAttribute("CartItemListDto")
     public CartItemListDto addCartItems() {
-        List<CartItemDto> cartItems = cartService.getCart().getItems().values().stream()
+        List<CartItemDto> cartItems = cartService.getCart().getItems().stream()
                 .map(item -> new CartItemDto(item.getPhone().getId(), item.getQuantity()))
                 .collect(Collectors.toList());
 
@@ -65,8 +65,8 @@ public class CartPageController {
         return "redirect:/cart";
     }
 
-    @DeleteMapping
-    public String deletePhone(Long id) {
+    @DeleteMapping("/{id}")
+    public String deletePhone(@PathVariable Long id) {
         cartService.remove(id);
         return "redirect:/cart";
     }

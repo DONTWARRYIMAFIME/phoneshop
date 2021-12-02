@@ -17,7 +17,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.servlet.view.InternalResourceView;
 
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -46,7 +48,7 @@ public class CartPageControllerTest {
     @Mock
     private Phone phone2;
     @Spy
-    private Map<Long, CartItem> cartItems;
+    private ArrayList<CartItem> cartItems;
 
     @InjectMocks
     private CartPageController cartPageController;
@@ -62,11 +64,17 @@ public class CartPageControllerTest {
         when(cartService.getCart()).thenReturn(cart);
         when(cart.getItems()).thenReturn(cartItems);
 
+        when(cartItem1.getPhone()).thenReturn(phone1);
+        when(cartItem2.getPhone()).thenReturn(phone2);
+
+        when(cartItem1.getQuantity()).thenReturn(101L);
+        when(cartItem2.getQuantity()).thenReturn(102L);
+
         when(phone1.getId()).thenReturn(101L);
         when(phone2.getId()).thenReturn(102L);
 
-        cartItems.put(phone1.getId(), cartItem1);
-        cartItems.put(phone2.getId(), cartItem2);
+        cartItems.add(cartItem1);
+        cartItems.add(cartItem2);
     }
 
     @Test
@@ -91,7 +99,7 @@ public class CartPageControllerTest {
     public void testDeletePhone() throws Exception {
         String request = "\"id\": \"101\"";
 
-        mockMvc.perform(delete(URL)
+        mockMvc.perform(delete(URL + "/101")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(request))
                 .andExpect(model().attributeExists("CartItemListDto"))

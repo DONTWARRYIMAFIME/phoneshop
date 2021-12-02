@@ -63,17 +63,17 @@
         <c:forEach var="phone" items="${phones}">
           <tr>
             <td>
-              <a href="<c:url value="/productDetails/${phone.id}"/>">
+              <a href="<c:url value="/product/${phone.id}"/>">
                 <img class="img" src="https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/${phone.imageUrl}">
               </a>
             </td>
             <td>
-              <a href="<c:url value="/productDetails/${phone.id}"/>">
+              <a href="<c:url value="/product/${phone.id}"/>">
                 ${phone.brand}
               </a>
             </td>
             <td>
-              <a href="<c:url value="/productDetails/${phone.id}"/>">
+              <a href="<c:url value="/product/${phone.id}"/>">
                 ${phone.model}
               </a>
             </td>

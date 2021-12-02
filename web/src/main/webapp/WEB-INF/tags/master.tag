@@ -19,6 +19,5 @@
     const ajaxCartUrl = "<c:url value="/ajaxCart"/>";
 </script>
 <script src="<c:url value="/resources/js/cart.js"/>"></script>
-<script src="<c:url value="/resources/js/exceptionFormatter.js"/>"></script>
 </body>
 </html>

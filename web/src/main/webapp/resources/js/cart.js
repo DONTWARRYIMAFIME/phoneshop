@@ -19,16 +19,6 @@ $("button[id^='add-to-cart-']").click(function () {
     });
 });
 
-$("button[id^='delete-from-cart-']").click(function () {
-    let id = $(this).attr("id").slice(17);
-    $("#delete-cart-item-id").val(id);
-    $("#delete-cart-item-form").submit();
-});
-
-$("button[id='update-cart-btn']").click(function () {
-    $("#update-cart-form").submit();
-});
-
 function updateCartInfo(data) {
     $("#cart-items-quantity").text(`${data.totalQuantity} items`);
     $("#total-price").text(`$${data.totalPrice}`);

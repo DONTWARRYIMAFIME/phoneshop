@@ -12,7 +12,7 @@ import javax.annotation.Resource;
 import java.util.Optional;
 
 @Controller
-@RequestMapping(value = "/productDetails")
+@RequestMapping(value = "/product")
 public class ProductDetailsPageController {
     @Resource
     private PhoneService phoneService;
@@ -26,7 +26,7 @@ public class ProductDetailsPageController {
         }
 
         model.addAttribute("phone", phoneOptional.get());
-        return "productDetails";
+        return "product";
     }
 }
 

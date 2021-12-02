@@ -5,15 +5,15 @@ import org.springframework.web.context.annotation.SessionScope;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.List;
 import java.util.Objects;
 
 @Component
 @SessionScope
 public class Cart implements Serializable {
-    private Map<Long, CartItem> items = new LinkedHashMap<>();
+    private List<CartItem> items = new ArrayList<>();
 
     private long totalQuantity;
     private BigDecimal totalPrice = BigDecimal.ZERO;
@@ -21,24 +21,24 @@ public class Cart implements Serializable {
     public Cart() {
     }
 
-    public Cart(Map<Long, CartItem> items) {
-        this.items.putAll(items);
+    public Cart(List<CartItem> items) {
+        this.items.addAll(items);
     }
 
-    public Map<Long, CartItem> getItems() {
-        return Collections.unmodifiableMap(items);
+    public List<CartItem> getItems() {
+        return Collections.unmodifiableList(items);
     }
 
-    public void setItems(Map<Long, CartItem> items) {
+    public void setItems(List<CartItem> items) {
         this.items = items;
     }
 
-    public void addItem(Long id, CartItem item) {
-        items.put(id, item);
+    public void addItem(CartItem item) {
+        items.add(item);
     }
 
-    public void removeItem(Long id) {
-        items.remove(id);
+    public void removeItem(CartItem cartItem) {
+        items.remove(cartItem);
     }
 
     public long getTotalQuantity() {
@@ -55,10 +55,6 @@ public class Cart implements Serializable {
 
     public void setTotalPrice(BigDecimal totalPrice) {
         this.totalPrice = totalPrice;
-    }
-
-    public void clear() {
-        items.clear();
     }
 
     @Override

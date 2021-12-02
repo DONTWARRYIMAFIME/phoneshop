@@ -5,7 +5,7 @@
 
 <tags:page pageTitle="Product Details">
   <div class="container mt-4 mb-3">
-    <a href="<c:url value="/productList"/>" class="btn btn-outline-primary">
+    <a href="<c:url value="/product"/>" class="btn btn-outline-primary">
       Back to product list
     </a>
     <div class="row">

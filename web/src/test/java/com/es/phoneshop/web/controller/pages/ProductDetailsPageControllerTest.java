@@ -21,7 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(MockitoJUnitRunner.class)
 public class ProductDetailsPageControllerTest {
-    private static final String URL = "/productDetails/{id}";
+    private static final String URL = "/product/{id}";
 
     @Mock
     private PhoneService phoneService;
@@ -49,7 +49,7 @@ public class ProductDetailsPageControllerTest {
 
         mockMvc.perform(get(URL, "1"))
                 .andExpect(model().attribute("phone", phone))
-                .andExpect(view().name("productDetails"));
+                .andExpect(view().name("product"));
     }
 
     @Test
