@@ -1,6 +1,8 @@
+<%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <tags:page pageTitle="Cart">
     <div class="container mt-3 mb-3">
@@ -8,12 +10,12 @@
             Cart
             <c:if test="${empty cart.items}">is empty</c:if>
         </h2>
-        <a href="<c:url value="/product"/>" class="btn btn-outline-primary mt-3">
+        <a href="<c:url value="/products"/>" class="btn btn-outline-primary mt-3">
             Back to product list
         </a>
         <c:if test="${not empty cart.items}">
             <table class="table table-bordered mt-3">
-                <thead>
+                <thead class="thead-dark">
                 <tr>
                     <th id="brand-col" scope="col">Brand</th>
                     <th id="model-col" scope="col">Model</th>
@@ -36,13 +38,13 @@
                                 </a>
                             </td>
                             <td>
-                                <c:if test="${empty cartItem.phone.colors}">-</c:if>
+                                <c:if test="${empty cartItem.phone.colors}">&mdash;</c:if>
                                 <c:forEach var="color" items="${cartItem.phone.colors}" varStatus="index">
                                     ${color.code}<c:if test="${not index.last}">,</c:if>
                                 </c:forEach>
                             </td>
                             <td>${cartItem.phone.displaySizeInches}"</td>
-                            <td>${cartItem.phone.price}$</td>
+                            <td><fmt:formatNumber type="currency" value="${cartItem.phone.price}" currencySymbol="$"/></td>
 
                             <td>
                                 <c:set var="cartItems" value="${CartItemListDto.cartItems}"/>
@@ -70,11 +72,13 @@
             </table>
 
             <form:form method="delete" id="delete-cart-item-form"/>
+            <form:form method="get" id="get-order-form"/>
 
             <div class="text-right mt-4">
                 <button form="update-cart-form" id="update-cart-btn" class="btn btn-outline-primary mr-2 pr-4 pl-4">Update</button>
-                <button class="btn btn-outline-primary pr-4 pl-4">Order</button>
+                <button formaction="<c:url value="/orders"/>" form="get-order-form" class="btn btn-outline-primary pr-4 pl-4">Order</button>
             </div>
+
         </c:if>
     </div>
     <script src="<c:url value="/resources/js/exceptionFormatter.js"/>"></script>

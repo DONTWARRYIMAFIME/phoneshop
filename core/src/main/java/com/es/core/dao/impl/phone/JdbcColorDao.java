@@ -1,6 +1,7 @@
-package com.es.core.dao.impl;
+package com.es.core.dao.impl.phone;
 
 import com.es.core.dao.ColorDao;
+import com.es.core.dao.impl.JdbcAbstractDao;
 import com.es.core.model.phone.Color;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;

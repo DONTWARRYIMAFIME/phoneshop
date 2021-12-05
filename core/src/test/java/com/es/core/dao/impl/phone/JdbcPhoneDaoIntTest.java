@@ -1,6 +1,7 @@
-package com.es.core.dao.impl;
+package com.es.core.dao.impl.phone;
 
 import com.es.core.dao.ColorDao;
+import com.es.core.dao.impl.phone.JdbcPhoneDao;
 import com.es.core.model.phone.Color;
 import com.es.core.model.phone.Phone;
 import com.es.core.model.search.SearchStructure;
@@ -46,7 +47,7 @@ public class JdbcPhoneDaoIntTest {
     }
 
     @BeforeClass
-    public static void setUpClass() {
+    public static void setupClass() {
         setupPhone(phone1, 101L, "Xiaomi", "Mi 6", BigDecimal.valueOf(101.0));
         setupPhone(phone2, 102L, "Samsung", "S 20", BigDecimal.valueOf(102.0));
         setupPhone(phone3, 103L, "Iphone", "X", BigDecimal.valueOf(103.0));

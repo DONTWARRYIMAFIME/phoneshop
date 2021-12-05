@@ -57,6 +57,10 @@ public class Cart implements Serializable {
         this.totalPrice = totalPrice;
     }
 
+    public void clear() {
+        items.clear();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -1,6 +1,7 @@
-package com.es.core.dao.impl;
+package com.es.core.dao.impl.phone;
 
 import com.es.core.dao.PhoneDao;
+import com.es.core.dao.impl.JdbcAbstractDao;
 import com.es.core.model.phone.Color;
 import com.es.core.model.phone.Phone;
 import com.es.core.model.search.SearchStructure;

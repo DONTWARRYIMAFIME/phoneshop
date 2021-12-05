@@ -1,5 +1,6 @@
-package com.es.core.dao.impl;
+package com.es.core.dao.impl.phone;
 
+import com.es.core.dao.impl.phone.JdbcColorDao;
 import com.es.core.model.phone.Color;
 import org.junit.Before;
 import org.junit.Test;

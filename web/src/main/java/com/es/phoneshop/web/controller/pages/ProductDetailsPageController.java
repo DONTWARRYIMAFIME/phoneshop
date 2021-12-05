@@ -12,7 +12,7 @@ import javax.annotation.Resource;
 import java.util.Optional;
 
 @Controller
-@RequestMapping(value = "/product")
+@RequestMapping(value = "/products")
 public class ProductDetailsPageController {
     @Resource
     private PhoneService phoneService;
