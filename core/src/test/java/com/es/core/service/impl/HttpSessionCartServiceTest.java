@@ -16,6 +16,7 @@ import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -69,7 +70,7 @@ public class HttpSessionCartServiceTest {
         cartService.addPhone(phone1.getId(), 5L);
 
         verify(phoneDao).get(phone1.getId());
-        assertEquals(Map.of(phone1.getId(), new CartItem(phone1, 5L)), cartService.getCart().getItems());
+        assertEquals(List.of(new CartItem(phone1, 5L)), cartService.getCart().getItems());
     }
 
     @Test(expected = OutOfStockException.class)
@@ -90,7 +91,7 @@ public class HttpSessionCartServiceTest {
     @Test
     public void testUpdateCartCorrectly() {
         cartService.update(Map.of(phone1.getId(), 8L));
-        verify(cart).addItem(phone1.getId(), new CartItem(phone1, 8L));
+        verify(cart).addItem(new CartItem(phone1, 8L));
     }
 
     @Test(expected = OutOfStockException.class)
@@ -105,9 +106,9 @@ public class HttpSessionCartServiceTest {
 
     @Test
     public void testRemoveFromCart() {
-        cartService.getCart().addItem(phone1.getId(), new CartItem(phone1, 5L));
+        cartService.getCart().addItem(new CartItem(phone1, 5L));
         cartService.remove(phone1.getId());
 
-        assertEquals(Map.of(), cartService.getCart().getItems());
+        assertEquals(List.of(), cartService.getCart().getItems());
     }
 }

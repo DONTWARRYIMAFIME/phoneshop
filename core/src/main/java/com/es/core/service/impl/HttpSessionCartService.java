@@ -38,7 +38,7 @@ public class HttpSessionCartService implements CartService {
                 .map(CartItem::getQuantity)
                 .orElse(0L);
 
-        AddItemToCart(phone, quantity, inCartQuantity);
+        addItemToCart(phone, quantity, inCartQuantity);
     }
 
     @Override
@@ -48,21 +48,25 @@ public class HttpSessionCartService implements CartService {
             Long quantity = entry.getValue();
 
             Phone phone = phoneDao.get(phoneId).orElseThrow(() -> new EntityNotFoundException("Phone", phoneId));
-            AddItemToCart(phone, quantity, 0L);
+            addItemToCart(phone, quantity, 0L);
         }
     }
 
     @Override
     public void remove(Long phoneId) {
-        cart.removeItem(phoneId);
-        recalculateTotalQuantityAndPrice();
+        findCartItem(phoneId).ifPresent(item -> {
+            cart.removeItem(item);
+            recalculateTotalQuantityAndPrice();
+        });
     }
 
     private Optional<CartItem> findCartItem(Long phoneId) {
-        return Optional.ofNullable(cart.getItems().get(phoneId));
+        return cart.getItems().stream()
+                .filter(item -> item.getPhone().getId().equals(phoneId))
+                .findAny();
     }
 
-    private void AddItemToCart(Phone phone, Long quantity, Long inCartQuantity) {
+    private void addItemToCart(Phone phone, Long quantity, Long inCartQuantity) {
         if (quantity <= 0) {
             throw new IllegalArgumentException("Quantity must be more than 0");
         }
@@ -75,21 +79,23 @@ public class HttpSessionCartService implements CartService {
             throw new OutOfStockException(quantity, quantityInStock - inCartQuantity);
         }
 
-        cart.addItem(phone.getId(), new CartItem(phone, requestQuantity));
+        findCartItem(phone.getId()).ifPresentOrElse(
+                item -> item.setQuantity(requestQuantity),
+                () -> cart.addItem(new CartItem(phone, requestQuantity))
+        );
+
         recalculateTotalQuantityAndPrice();
     }
 
     private void recalculateTotalQuantityAndPrice() {
         long totalQuantity = cart
                 .getItems()
-                .values()
                 .stream()
                 .mapToLong(CartItem::getQuantity)
                 .sum();
 
         BigDecimal totalPrice = cart
                 .getItems()
-                .values()
                 .stream()
                 .map(item -> item.getPhone().getPrice().multiply(BigDecimal.valueOf(item.getQuantity())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);

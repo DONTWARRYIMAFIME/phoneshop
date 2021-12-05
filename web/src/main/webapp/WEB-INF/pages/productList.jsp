@@ -9,13 +9,17 @@
     <div class="row">
       <div class="col">
         <h2>Phones</h2>
-        <h5><c:out value="Found ${phoneQuantity} phones"/></h5>
       </div>
       <div class="col">
         <form method="get" class="form-inline float-right">
           <input class="form-control mr-2" type="text" name="query" value="${param.query}"/>
           <button class="btn btn-outline-primary">Search</button>
         </form>
+      </div>
+    </div>
+    <div class="d-flex justify-content-end p-1">
+      <div class="justify-content-end">
+        <h5><c:out value="Found ${phoneQuantity} phones"/></h5>
       </div>
     </div>
     <c:if test="${not empty phones}">
@@ -59,25 +63,35 @@
         <c:forEach var="phone" items="${phones}">
           <tr>
             <td>
-              <img class="img" src="https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/${phone.imageUrl}">
+              <a href="<c:url value="/product/${phone.id}"/>">
+                <img class="img" src="https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/${phone.imageUrl}">
+              </a>
             </td>
-            <td>${phone.brand}</td>
-            <td>${phone.model}</td>
             <td>
+              <a href="<c:url value="/product/${phone.id}"/>">
+                ${phone.brand}
+              </a>
+            </td>
+            <td>
+              <a href="<c:url value="/product/${phone.id}"/>">
+                ${phone.model}
+              </a>
+            </td>
+            <td>
+              <c:if test="${empty phone.colors}">-</c:if>
               <c:forEach var="color" items="${phone.colors}" varStatus="index">
-                <c:out value="${color.code}"/>
-                <c:if test="${not index.last}">, </c:if>
+                ${color.code}<c:if test="${not index.last}">, </c:if>
               </c:forEach>
             </td>
             <td>${phone.displaySizeInches}"</td>
             <td>$ ${phone.price}</td>
             <td>
-              <input type="text" id="item-quantity-${phone.id}" value="1"/>
+              <input class="form-control mr-2" type="text" id="item-quantity-${phone.id}" value="1"/>
               <div id="item-quantity-error-${phone.id}"></div>
             </td>
             <td>
               <button type="button" id="add-to-cart-${phone.id}" class="btn btn-outline-primary">
-                Add to
+                Add to cart
               </button>
             </td>
           </tr>
