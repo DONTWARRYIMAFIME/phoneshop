@@ -21,8 +21,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class HttpSessionCartServiceTest {
@@ -90,6 +89,7 @@ public class HttpSessionCartServiceTest {
 
     @Test
     public void testUpdateCartCorrectly() {
+        cartService.getCart().addItem(new CartItem(phone1, 5L));
         cartService.update(Map.of(phone1.getId(), 8L));
         verify(cart).addItem(new CartItem(phone1, 8L));
     }
@@ -110,5 +110,15 @@ public class HttpSessionCartServiceTest {
         cartService.remove(phone1.getId());
 
         assertEquals(List.of(), cartService.getCart().getItems());
+    }
+
+    @Test
+    public void testClearCart() {
+        cartService.getCart().setItems(List.of(new CartItem(phone1, 5L), new CartItem(phone2, 3L), new CartItem(phone1, 4L)));
+        cartService.clear();
+
+        assertEquals(List.of(), cartService.getCart().getItems());
+
+        verify(cart, times(1)).clear();
     }
 }

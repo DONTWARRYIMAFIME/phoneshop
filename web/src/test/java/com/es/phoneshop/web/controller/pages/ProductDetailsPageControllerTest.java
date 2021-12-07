@@ -1,5 +1,6 @@
 package com.es.phoneshop.web.controller.pages;
 
+import com.es.core.exception.PhoneNotFoundException;
 import com.es.core.model.phone.Phone;
 import com.es.core.service.PhoneService;
 import org.junit.Before;
@@ -45,7 +46,7 @@ public class ProductDetailsPageControllerTest {
 
     @Test
     public void testShowProductDetails() throws Exception {
-        when(phoneService.getPhone(1L)).thenReturn(Optional.of(phone));
+        when(phoneService.getPhone(1L)).thenReturn(phone);
 
         mockMvc.perform(get(URL, "1"))
                 .andExpect(model().attribute("phone", phone))
@@ -54,7 +55,7 @@ public class ProductDetailsPageControllerTest {
 
     @Test
     public void testShowProductNotFound() throws Exception {
-        when(phoneService.getPhone(1L)).thenReturn(Optional.empty());
+        when(phoneService.getPhone(1L)).thenThrow(PhoneNotFoundException.class);
 
         mockMvc.perform(get(URL, "1"))
                 .andExpect(view().name("error/404"));

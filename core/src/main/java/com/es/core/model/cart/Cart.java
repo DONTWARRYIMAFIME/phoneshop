@@ -30,7 +30,7 @@ public class Cart implements Serializable {
     }
 
     public void setItems(List<CartItem> items) {
-        this.items = items;
+        this.items.addAll(items);
     }
 
     public void addItem(CartItem item) {

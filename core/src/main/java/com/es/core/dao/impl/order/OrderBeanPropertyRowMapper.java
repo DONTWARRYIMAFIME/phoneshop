@@ -1,24 +1,30 @@
 package com.es.core.dao.impl.order;
 
-import com.es.core.dao.PhoneDao;
-import com.es.core.exception.PhoneNotFoundException;
 import com.es.core.model.order.Order;
 import com.es.core.model.order.OrderItem;
 import com.es.core.model.order.OrderStatus;
-import com.es.core.model.phone.Phone;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Component;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class OrderBeanPropertyRowMapper extends BeanPropertyRowMapper<Order> {
-    private final PhoneDao phoneDao;
+    private static final String GET_ORDER_ITEMS_BY_ORDER_ID = "SELECT * FROM orderItems WHERE orderId = :orderId";
 
-    public OrderBeanPropertyRowMapper(PhoneDao phoneDao) {
+    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+    private OrderItemBeanPropertyRowMapper orderItemBeanPropertyRowMapper;
+
+    public OrderBeanPropertyRowMapper(NamedParameterJdbcTemplate namedParameterJdbcTemplate, OrderItemBeanPropertyRowMapper orderItemBeanPropertyRowMapper) {
         super(Order.class);
-        this.phoneDao = phoneDao;
+        this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
+        this.orderItemBeanPropertyRowMapper = orderItemBeanPropertyRowMapper;
     }
 
     @Override
@@ -35,16 +41,13 @@ public class OrderBeanPropertyRowMapper extends BeanPropertyRowMapper<Order> {
         order.setDeliveryAddress(rs.getString("deliveryAddress"));
         order.setContactPhoneNo(rs.getString("contactPhoneNo"));
         order.setStatus(OrderStatus.valueOf(rs.getString("status")));
+        order.setDateTime(rs.getTimestamp("dateTime").toLocalDateTime());
         order.setAdditionalInfo(rs.getString("additionalInfo"));
 
-        do {
-            Long phoneId = rs.getLong("phoneId");
-            Phone phone = phoneDao.get(phoneId).orElseThrow(() -> new PhoneNotFoundException(phoneId));
-            Long quantity = rs.getLong("quantity");
-
-            OrderItem orderItem = new OrderItem(phone, order, quantity);
-            order.getOrderItems().add(orderItem);
-        } while (rs.next());
+        SqlParameterSource sqlParameterSource = new MapSqlParameterSource("orderId", order.getId());
+        List<OrderItem> orderItems = new ArrayList<>(namedParameterJdbcTemplate.query(GET_ORDER_ITEMS_BY_ORDER_ID, sqlParameterSource, orderItemBeanPropertyRowMapper));
+        orderItems.forEach(item -> item.setOrder(order));
+        order.setOrderItems(orderItems);
 
         return order;
     }
