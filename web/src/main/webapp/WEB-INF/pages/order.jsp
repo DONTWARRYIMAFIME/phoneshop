@@ -117,7 +117,7 @@
                 </div>
 
                 <div class="form-group row pb-3">
-                    <button formaction="<c:url value="/orders"/>" class="col-auto btn btn-outline-success pl-4 pr-4">Order</button>
+                    <button formaction="<c:url value="/orders/place"/>" class="col-auto btn btn-outline-success pl-4 pr-4">Order</button>
                 </div>
             </form:form>
         </c:if>

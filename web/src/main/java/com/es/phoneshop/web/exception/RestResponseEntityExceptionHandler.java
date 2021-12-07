@@ -1,4 +1,4 @@
-package com.es.phoneshop.web.controller.exception;
+package com.es.phoneshop.web.exception;
 
 import com.es.core.exception.EntityNotFoundException;
 import com.es.core.exception.OutOfStockException;

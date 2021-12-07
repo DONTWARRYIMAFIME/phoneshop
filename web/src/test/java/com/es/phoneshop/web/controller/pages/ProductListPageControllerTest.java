@@ -17,7 +17,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(MockitoJUnitRunner.class)
 public class ProductListPageControllerTest {
-    private static final String URL = "/products";
+    private static final String URL = "/productList";
 
     @Mock
     private PhoneService phoneService;

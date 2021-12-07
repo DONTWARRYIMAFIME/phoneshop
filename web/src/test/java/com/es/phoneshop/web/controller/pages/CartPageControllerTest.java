@@ -18,8 +18,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.servlet.view.InternalResourceView;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -87,7 +85,7 @@ public class CartPageControllerTest {
 
     @Test
     public void testUpdateCart() throws Exception {
-        mockMvc.perform(put(URL)
+        mockMvc.perform(put(URL + "/update")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JSON))
                 .andExpect(model().attributeExists("CartItemListDto"))

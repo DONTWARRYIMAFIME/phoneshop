@@ -15,7 +15,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 @Controller
-@RequestMapping (value = "/products")
+@RequestMapping (value = "/productList")
 public class ProductListPageController {
     
     private static final int PHONES_PER_PAGE = 10;

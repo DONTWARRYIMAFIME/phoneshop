@@ -10,7 +10,7 @@
             Cart
             <c:if test="${empty cart.items}">is empty</c:if>
         </h2>
-        <a href="<c:url value="/products"/>" class="btn btn-outline-primary mt-3">
+        <a href="<c:url value="/productList"/>" class="btn btn-outline-primary mt-3">
             Back to product list
         </a>
         <c:if test="${not empty cart.items}">
@@ -75,7 +75,7 @@
             <form:form method="get" id="get-order-form"/>
 
             <div class="text-right mt-4">
-                <button form="update-cart-form" id="update-cart-btn" class="btn btn-outline-primary mr-2 pr-4 pl-4">Update</button>
+                <button formaction="<c:url value="/cart/update"/>" form="update-cart-form" id="update-cart-btn" class="btn btn-outline-primary mr-2 pr-4 pl-4">Update</button>
                 <button formaction="<c:url value="/orders"/>" form="get-order-form" class="btn btn-outline-primary pr-4 pl-4">Order</button>
             </div>
 

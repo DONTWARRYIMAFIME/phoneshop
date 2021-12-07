@@ -22,7 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(MockitoJUnitRunner.class)
 public class OrderOverviewPageControllerTest {
 
-    private static final String URL = "/orders/{secureId}";
+    private static final String URL = "/orderOverview/{secureId}";
 
     @Mock
     private OrderService orderService;

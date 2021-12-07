@@ -83,6 +83,6 @@
             </div>
         </div>
 
-        <a href="<c:url value="/products"/>" class="btn btn-outline-primary">Back to shopping</a>
+        <a href="<c:url value="/productList"/>" class="btn btn-outline-primary">Back to shopping</a>
     </div>
 </tags:page>

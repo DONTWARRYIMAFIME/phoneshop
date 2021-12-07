@@ -4,7 +4,7 @@
     <div class="container">
         <div class="d-flex justify-content-between align-items-end">
             <h1>
-                <a href="<c:url value="/products"/>" id="logo">Phonify</a>
+                <a href="<c:url value="/productList"/>" id="logo">Phonify</a>
             </h1>
             <div class="d-flex flex-column align-items-end">
                 <a href="#" class="mb-3">Login</a>

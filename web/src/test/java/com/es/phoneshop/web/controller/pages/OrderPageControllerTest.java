@@ -10,6 +10,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -17,6 +18,7 @@ import org.springframework.web.servlet.view.InternalResourceView;
 
 import java.util.Collections;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -39,6 +41,8 @@ public class OrderPageControllerTest {
     private OrderService orderService;
     @Mock
     private Order order;
+    @Mock
+    private ConversionService conversionService;
     @InjectMocks
     private OrderPageController orderPageController;
 
@@ -51,6 +55,7 @@ public class OrderPageControllerTest {
                 .build();
 
         when(orderService.createOrder()).thenReturn(order);
+        when(conversionService.convert(any(), any())).thenReturn(order);
     }
 
     @Test
@@ -67,17 +72,17 @@ public class OrderPageControllerTest {
         when(order.getOrderItems()).thenReturn(Collections.singletonList(orderItem));
         when(order.getSecureId()).thenReturn("secureId");
 
-        mockMvc.perform(post(URL)
+        mockMvc.perform(post(URL + "/place")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JSON))
                 .andExpect(model().attribute("order", order))
                 .andExpect(model().attributeExists("OrderDto"))
-                .andExpect(view().name("redirect:/orders/secureId"));
+                .andExpect(view().name("redirect:/orderOverview/secureId"));
     }
 
     @Test
     public void testPlaceEmptyOrder() throws Exception {
-        mockMvc.perform(post(URL)
+        mockMvc.perform(post(URL + "/place")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JSON))
                 .andExpect(model().attribute("order", order))
@@ -93,7 +98,7 @@ public class OrderPageControllerTest {
         String errorMessage = "out of stock";
         doThrow(new OutOfStockException(errorMessage)).when(orderService).placeOrder(order);
 
-        mockMvc.perform(post(URL)
+        mockMvc.perform(post(URL + "/place")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JSON))
                 .andExpect(model().attribute("order", order))

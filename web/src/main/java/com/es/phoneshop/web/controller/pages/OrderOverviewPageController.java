@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.annotation.Resource;
 
 @Controller
-@RequestMapping(value = "/orders")
+@RequestMapping(value = "/orderOverview")
 public class OrderOverviewPageController {
     @Resource
     private OrderService orderService;

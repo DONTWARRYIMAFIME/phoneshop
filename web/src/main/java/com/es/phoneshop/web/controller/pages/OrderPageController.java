@@ -3,8 +3,9 @@ package com.es.phoneshop.web.controller.pages;
 import com.es.core.exception.OutOfStockException;
 import com.es.core.model.order.Order;
 import com.es.core.service.OrderService;
-import com.es.phoneshop.web.controller.converter.OrderDtoConverter;
-import com.es.phoneshop.web.controller.dto.OrderDto;
+
+import com.es.phoneshop.web.dto.OrderDto;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -21,6 +22,8 @@ import javax.validation.Valid;
 public class OrderPageController {
     @Resource
     private OrderService orderService;
+    @Resource
+    private ConversionService conversionService;
 
     @ModelAttribute
     public Order addOrder() {
@@ -37,16 +40,14 @@ public class OrderPageController {
         return "order";
     }
 
-    @PostMapping
+    @PostMapping("/place")
     public String placeOrder(@ModelAttribute("OrderDto") @Valid OrderDto orderDto,
                              BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             return "order";
         }
 
-        Order order = orderService.createOrder();
-        OrderDtoConverter converter = new OrderDtoConverter(order);
-        order = converter.convert(orderDto);
+        Order order = conversionService.convert(orderDto, Order.class);
 
         if (order.getOrderItems().isEmpty()) {
             return "order";
@@ -60,6 +61,6 @@ public class OrderPageController {
             return "order";
         }
 
-        return "redirect:/orders/" + order.getSecureId();
+        return "redirect:/orderOverview/" + order.getSecureId();
     }
 }
