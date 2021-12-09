@@ -35,3 +35,18 @@ div[id^="item-quantity-error-"] {
 .error {
     color: red;
 }
+
+#additional-info {
+    height: 128px;
+    resize: none;
+}
+
+.required:after {
+    content: "*";
+    color: red;
+}
+
+.clip {
+    overflow: auto;
+    text-overflow: ellipsis;
+}

@@ -2,10 +2,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <tags:page pageTitle="Product Details">
   <div class="container mt-4 mb-3">
-    <a href="<c:url value="/product"/>" class="btn btn-outline-primary">
+    <a href="<c:url value="/productList"/>" class="btn btn-outline-primary">
       Back to product list
     </a>
     <div class="row">
@@ -17,14 +18,14 @@
         <div class="row border mt-3 ml-1 w-75">
           <div class="col p-2">
             <label class="h4" for="item-quantity-${phone.id}">
-              Price: ${phone.price}$
+              Price:
+              <fmt:formatNumber type="currency" value="${phone.price}" currencySymbol="$"/>
             </label>
             <div class="row">
               <div class="col-7 pr-1">
                 <input type="text" id="item-quantity-${phone.id}"
                        class="form-control text-right" value="1"/>
-
-<%--                <div id="item-quantity-error-${phone.id}" class="error text-right"></div>--%>
+                <div id="item-quantity-error-${phone.id}" class="error text-right"></div>
               </div>
               <div class="col-5 pl-1 text-center">
                 <button id="add-to-cart-${phone.id}" class="btn btn-outline-primary">

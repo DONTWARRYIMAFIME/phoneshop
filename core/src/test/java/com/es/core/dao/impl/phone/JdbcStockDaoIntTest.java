@@ -1,4 +1,4 @@
-package com.es.core.dao.impl;
+package com.es.core.dao.impl.phone;
 
 import com.es.core.dao.PhoneDao;
 import com.es.core.dao.StockDao;

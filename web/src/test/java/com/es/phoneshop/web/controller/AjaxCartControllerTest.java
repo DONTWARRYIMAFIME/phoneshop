@@ -1,10 +1,11 @@
-package com.es.phoneshop.web.controller.pages;
+package com.es.phoneshop.web.controller;
 
 import com.es.core.exception.OutOfStockException;
 import com.es.core.model.cart.Cart;
 import com.es.core.model.cart.CartItem;
 import com.es.core.service.CartService;
-import com.es.phoneshop.web.controller.exception.RestResponseEntityExceptionHandler;
+import com.es.phoneshop.web.controller.AjaxCartController;
+import com.es.phoneshop.web.exception.RestResponseEntityExceptionHandler;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

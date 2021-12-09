@@ -1,4 +1,4 @@
-package com.es.core.dao.impl;
+package com.es.core.dao.impl.phone;
 
 import com.es.core.model.phone.Color;
 import com.es.core.model.phone.Phone;
@@ -6,12 +6,14 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.stereotype.Component;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Set;
 
+@Component
 public class PhoneBeanPropertyRowMapper extends BeanPropertyRowMapper<Phone> {
     private static final String GET_PHONE_WITH_COLOR = "SELECT * FROM colors " +
             "JOIN phone2color ON colors.id = phone2color.colorId " +

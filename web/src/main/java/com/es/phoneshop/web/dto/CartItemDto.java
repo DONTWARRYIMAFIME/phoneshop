@@ -1,4 +1,4 @@
-package com.es.phoneshop.web.controller.dto;
+package com.es.phoneshop.web.dto;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;

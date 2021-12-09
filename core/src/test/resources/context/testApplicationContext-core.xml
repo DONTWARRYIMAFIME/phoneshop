@@ -23,12 +23,10 @@
     <bean id="namedParameterJdbcTemplate" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
         <constructor-arg name="dataSource" ref="dataSource"/>
     </bean>
-    <bean id="phoneBeanPropertyRowMapper" class="com.es.core.dao.impl.PhoneBeanPropertyRowMapper">
-        <constructor-arg name="namedParameterJdbcTemplate" ref="namedParameterJdbcTemplate"/>
+    <bean id="orderServiceImpl" class="com.es.core.service.impl.OrderServiceImpl">
+        <property name="deliveryPrice" value="5"/>
     </bean>
-    <bean id="stockBeanPropertyRowMapper" class="com.es.core.dao.impl.StockBeanPropertyRowMapper">
-        <constructor-arg name="phoneDao" ref="jdbcPhoneDao"/>
-    </bean>
+
     <jdbc:initialize-database enabled="true" data-source="dataSource">
         <jdbc:script location="classpath:db/schema.sql"/>
         <jdbc:script location="classpath:db/demodata-phones.sql"/>

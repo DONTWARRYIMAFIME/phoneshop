@@ -3,6 +3,7 @@
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <tags:page pageTitle="Product List">
   <div class="container mt-5">
@@ -63,28 +64,28 @@
         <c:forEach var="phone" items="${phones}">
           <tr>
             <td>
-              <a href="<c:url value="/product/${phone.id}"/>">
+              <a href="<c:url value="/products/${phone.id}"/>">
                 <img class="img" src="https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/${phone.imageUrl}">
               </a>
             </td>
             <td>
-              <a href="<c:url value="/product/${phone.id}"/>">
+              <a href="<c:url value="/products/${phone.id}"/>">
                 ${phone.brand}
               </a>
             </td>
             <td>
-              <a href="<c:url value="/product/${phone.id}"/>">
+              <a href="<c:url value="/products/${phone.id}"/>">
                 ${phone.model}
               </a>
             </td>
             <td>
-              <c:if test="${empty phone.colors}">-</c:if>
+              <c:if test="${empty phone.colors}">&mdash;</c:if>
               <c:forEach var="color" items="${phone.colors}" varStatus="index">
                 ${color.code}<c:if test="${not index.last}">, </c:if>
               </c:forEach>
             </td>
             <td>${phone.displaySizeInches}"</td>
-            <td>$ ${phone.price}</td>
+            <td><fmt:formatNumber type="currency" value="${phone.price}" currencySymbol="$"/></td>
             <td>
               <input class="form-control mr-2" type="text" id="item-quantity-${phone.id}" value="1"/>
               <div id="item-quantity-error-${phone.id}"></div>

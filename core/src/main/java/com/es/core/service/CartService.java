@@ -9,4 +9,5 @@ public interface CartService {
     void addPhone(Long phoneId, Long quantity);
     void update(Map<Long, Long> items);
     void remove(Long phoneId);
+    void clear();
 }

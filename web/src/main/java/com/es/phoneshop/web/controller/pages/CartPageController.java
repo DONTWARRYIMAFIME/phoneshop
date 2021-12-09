@@ -2,9 +2,9 @@ package com.es.phoneshop.web.controller.pages;
 
 import com.es.core.model.cart.Cart;
 import com.es.core.service.CartService;
-import com.es.phoneshop.web.controller.dto.CartItemDto;
-import com.es.phoneshop.web.controller.dto.CartItemListDto;
-import com.es.phoneshop.web.controller.validation.CartItemListDtoValidator;
+import com.es.phoneshop.web.dto.CartItemDto;
+import com.es.phoneshop.web.dto.CartItemListDto;
+import com.es.phoneshop.web.validation.CartItemListDtoValidator;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
@@ -48,7 +48,7 @@ public class CartPageController {
         return new CartItemListDto(cartItems);
     }
 
-    @PutMapping
+    @PutMapping("/update")
     public String updateCart(@ModelAttribute("CartItemListDto") @Valid CartItemListDto cartItems,
                              BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {

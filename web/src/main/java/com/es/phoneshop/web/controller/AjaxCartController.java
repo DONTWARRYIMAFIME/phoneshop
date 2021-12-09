@@ -1,10 +1,10 @@
-package com.es.phoneshop.web.controller.pages;
+package com.es.phoneshop.web.controller;
 
 import com.es.core.model.cart.Cart;
 import com.es.core.service.CartService;
-import com.es.phoneshop.web.controller.dto.CartDto;
-import com.es.phoneshop.web.controller.dto.CartItemDto;
-import com.es.phoneshop.web.controller.exception.InvalidFormatException;
+import com.es.phoneshop.web.dto.CartDto;
+import com.es.phoneshop.web.dto.CartItemDto;
+import com.es.phoneshop.web.exception.InvalidFormatException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;

@@ -2,8 +2,8 @@ package com.es.core.service.impl;
 
 import com.es.core.dao.PhoneDao;
 import com.es.core.dao.StockDao;
-import com.es.core.exception.EntityNotFoundException;
 import com.es.core.exception.OutOfStockException;
+import com.es.core.exception.PhoneNotFoundException;
 import com.es.core.model.cart.Cart;
 import com.es.core.model.cart.CartItem;
 import com.es.core.model.phone.Phone;
@@ -32,7 +32,7 @@ public class HttpSessionCartService implements CartService {
 
     @Override
     public void addPhone(Long phoneId, Long quantity) {
-        Phone phone = phoneDao.get(phoneId).orElseThrow(() -> new EntityNotFoundException("Phone", phoneId));
+        Phone phone = phoneDao.get(phoneId).orElseThrow(() -> new PhoneNotFoundException(phoneId));
 
         Long inCartQuantity = findCartItem(phoneId)
                 .map(CartItem::getQuantity)
@@ -47,7 +47,7 @@ public class HttpSessionCartService implements CartService {
             Long phoneId = entry.getKey();
             Long quantity = entry.getValue();
 
-            Phone phone = phoneDao.get(phoneId).orElseThrow(() -> new EntityNotFoundException("Phone", phoneId));
+            Phone phone = phoneDao.get(phoneId).orElseThrow(() -> new PhoneNotFoundException(phoneId));
             addItemToCart(phone, quantity, 0L);
         }
     }
@@ -58,6 +58,12 @@ public class HttpSessionCartService implements CartService {
             cart.removeItem(item);
             recalculateTotalQuantityAndPrice();
         });
+    }
+
+    @Override
+    public void clear() {
+        cart.clear();
+        recalculateTotalQuantityAndPrice();
     }
 
     private Optional<CartItem> findCartItem(Long phoneId) {

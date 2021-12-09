@@ -19,3 +19,9 @@ INSERT INTO colors VALUES (4, 'yellow');
 
 INSERT INTO phone2color VALUES (106, 1);
 INSERT INTO phone2color VALUES (106, 2);
+
+INSERT INTO orders (id, secureId, firstName, lastName, deliveryAddress, contactPhoneNo, status) VALUES (1, '913cdf30-b93c-4bbd-b1cd-0bf2099c0417', 'Ulas', 'Kastsiukovich', '1-May Street', '+375331111111', 'NEW');
+
+INSERT INTO orderItems VALUES (101, 1, 11);
+INSERT INTO orderItems VALUES (102, 1, 12);
+INSERT INTO orderItems VALUES (103, 1, 13);

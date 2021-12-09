@@ -1,12 +1,15 @@
 package com.es.core.model.order;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Order
 {
     private Long id;
-    private List<OrderItem> orderItems;
+    private String secureId;
+    private List<OrderItem> orderItems = new ArrayList<>();
     /**
      *  A sum of order item prices;
      */
@@ -22,7 +25,8 @@ public class Order
     private String deliveryAddress;
     private String contactPhoneNo;
 
-    private OrderStatus status;
+    private OrderStatus status = OrderStatus.NEW;
+    private String additionalInfo;
 
     public Long getId() {
         return id;
@@ -30,6 +34,14 @@ public class Order
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getSecureId() {
+        return secureId;
+    }
+
+    public void setSecureId(String secureId) {
+        this.secureId = secureId;
     }
 
     public List<OrderItem> getOrderItems() {
@@ -102,5 +114,26 @@ public class Order
 
     public void setStatus(OrderStatus status) {
         this.status = status;
+    }
+
+    public String getAdditionalInfo() {
+        return additionalInfo;
+    }
+
+    public void setAdditionalInfo(String additionalInfo) {
+        this.additionalInfo = additionalInfo;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Order order = (Order) o;
+        return Objects.equals(id, order.id) && Objects.equals(secureId, order.secureId) && Objects.equals(subtotal, order.subtotal) && Objects.equals(deliveryPrice, order.deliveryPrice) && Objects.equals(totalPrice, order.totalPrice) && Objects.equals(firstName, order.firstName) && Objects.equals(lastName, order.lastName) && Objects.equals(deliveryAddress, order.deliveryAddress) && Objects.equals(contactPhoneNo, order.contactPhoneNo) && status == order.status && Objects.equals(additionalInfo, order.additionalInfo);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, secureId, orderItems, subtotal, deliveryPrice, totalPrice, firstName, lastName, deliveryAddress, contactPhoneNo, status, additionalInfo);
     }
 }
