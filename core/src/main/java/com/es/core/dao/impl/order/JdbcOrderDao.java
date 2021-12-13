@@ -9,23 +9,35 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
 public class JdbcOrderDao extends JdbcAbstractDao<Order> implements OrderDao {
-    private static final String GET_ORDER_BY_SECURE_ID = "SELECT * FROM orders JOIN orderItems " +
-            "ON orders.id = orderItems.orderId WHERE orders.secureId = :secureId";
+    private static final String FIND_ALL_ORDERS = "SELECT * FROM orders";
+    private static final String GET_ORDER_BY_ID = "SELECT * FROM orders WHERE orders.id = :id";
+    private static final String GET_ORDER_BY_SECURE_ID = "SELECT * FROM orders WHERE orders.secureId = :secureId";
     private static final String INSERT_ORDER = "INSERT INTO orders (id, secureId, subtotal, deliveryPrice, " +
-            "totalPrice, firstName, lastName, deliveryAddress, contactPhoneNo, status, additionalInfo) " +
+            "totalPrice, firstName, lastName, deliveryAddress, contactPhoneNo, status, dateTime, additionalInfo) " +
             "VALUES (:id, :secureId, :subtotal, :deliveryPrice, :totalPrice, :firstName, :lastName, " +
-            ":deliveryAddress, :contactPhoneNo, :status, :additionalInfo)";
+            ":deliveryAddress, :contactPhoneNo, :status, :dateTime, :additionalInfo)";
     private static final String UPDATE_ORDER = "UPDATE orders SET subtotal = :subtotal, " +
             "deliveryPrice = :deliveryPrice, totalPrice = :totalPrice, firstName = :firstName, lastName = :lastName, " +
             "deliveryAddress = :deliveryAddress, contactPhoneNo = :contactPhoneNo, status = :status, " +
-            "additionalInfo = :additionalInfo WHERE id = :id";
+            "dateTime = :dateTime, additionalInfo = :additionalInfo WHERE id = :id";
 
     @Resource
     private OrderBeanPropertyRowMapper orderBeanPropertyRowMapper;
+
+    @Override
+    public List<Order> findAll() {
+        return super.findAll(FIND_ALL_ORDERS, new MapSqlParameterSource(), orderBeanPropertyRowMapper);
+    }
+
+    @Override
+    public Optional<Order> getById(Long id) {
+        return super.get(GET_ORDER_BY_ID, new MapSqlParameterSource("id", id), orderBeanPropertyRowMapper);
+    }
 
     @Override
     public Optional<Order> getBySecureId(String secureId) {
@@ -61,8 +73,8 @@ public class JdbcOrderDao extends JdbcAbstractDao<Order> implements OrderDao {
                 .addValue("deliveryAddress", order.getDeliveryAddress())
                 .addValue("contactPhoneNo", order.getContactPhoneNo())
                 .addValue("status", order.getStatus().toString())
+                .addValue("dateTime", order.getDateTime())
                 .addValue("additionalInfo", order.getAdditionalInfo());
     }
-
 
 }

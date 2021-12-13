@@ -2,6 +2,7 @@ package com.es.core.service.impl;
 
 import com.es.core.dao.ColorDao;
 import com.es.core.dao.PhoneDao;
+import com.es.core.exception.PhoneNotFoundException;
 import com.es.core.model.phone.Phone;
 import com.es.core.model.search.SearchStructure;
 import com.es.core.service.PhoneService;
@@ -10,7 +11,6 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.Locale;
-import java.util.Optional;
 
 @Service
 public class PhoneServiceImpl implements PhoneService {
@@ -20,8 +20,8 @@ public class PhoneServiceImpl implements PhoneService {
     private ColorDao colorDao;
 
     @Override
-    public Optional<Phone> getPhone(Long id) {
-        return phoneDao.get(id);
+    public Phone getPhone(Long id) {
+        return phoneDao.get(id).orElseThrow(() -> new PhoneNotFoundException(id));
     }
 
     @Override

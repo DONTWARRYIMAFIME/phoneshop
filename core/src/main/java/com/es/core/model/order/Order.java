@@ -1,6 +1,7 @@
 package com.es.core.model.order;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -26,6 +27,7 @@ public class Order
     private String contactPhoneNo;
 
     private OrderStatus status = OrderStatus.NEW;
+    private LocalDateTime dateTime = LocalDateTime.now();
     private String additionalInfo;
 
     public Long getId() {
@@ -114,6 +116,14 @@ public class Order
 
     public void setStatus(OrderStatus status) {
         this.status = status;
+    }
+
+    public LocalDateTime getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(LocalDateTime dateTime) {
+        this.dateTime = dateTime;
     }
 
     public String getAdditionalInfo() {

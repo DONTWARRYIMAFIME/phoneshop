@@ -2,16 +2,17 @@ package com.es.core.service.impl;
 
 import com.es.core.dao.OrderDao;
 import com.es.core.dao.OrderItemDao;
-import com.es.core.dao.StockDao;
 import com.es.core.exception.OrderNotFoundException;
 import com.es.core.exception.OutOfStockException;
 import com.es.core.model.cart.Cart;
 import com.es.core.model.cart.CartItem;
 import com.es.core.model.order.Order;
 import com.es.core.model.order.OrderItem;
+import com.es.core.model.order.OrderStatus;
 import com.es.core.model.phone.Phone;
 import com.es.core.model.phone.Stock;
 import com.es.core.service.CartService;
+import com.es.core.service.StockService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,7 +34,7 @@ public class OrderServiceImplTest {
     @Mock
     private OrderDao orderDao;
     @Mock
-    private StockDao stockDao;
+    private StockService stockService;
     @Mock
     private OrderItemDao orderItemDao;
     @Mock
@@ -43,7 +44,9 @@ public class OrderServiceImplTest {
     @Mock
     private Cart cart;
     @Mock
-    private Order order;
+    private Order order1;
+    @Mock
+    private Order order2;
     @Mock
     private OrderItem orderItem1;
     @Mock
@@ -74,11 +77,18 @@ public class OrderServiceImplTest {
         when(orderItem2.getQuantity()).thenReturn(12L);
 
         orderItems.addAll(List.of(orderItem1, orderItem2));
-
-        when(order.getOrderItems()).thenReturn(orderItems);
+        when(order1.getOrderItems()).thenReturn(orderItems);
 
         when(cart.getItems()).thenReturn(List.of(cartItem1, cartItem2));
         when(cart.getTotalPrice()).thenReturn(new BigDecimal(999));
+        
+        when(orderDao.findAll()).thenReturn(List.of(order1, order2));
+    }
+    
+    @Test
+    public void testGetAllOrders() {
+        assertEquals(List.of(order1, order2), orderService.getAllOrders());
+        verify(orderDao, times(1)).findAll();
     }
 
     @Test
@@ -94,34 +104,71 @@ public class OrderServiceImplTest {
         Stock stock1 = new Stock(phone1, 14, 0);
         Stock stock2 = new Stock(phone2, 25, 0);
 
-        when(stockDao.get(101L)).thenReturn(Optional.of(stock1));
-        when(stockDao.get(102L)).thenReturn(Optional.of(stock2));
+        when(stockService.getStock(101L)).thenReturn(stock1);
+        when(stockService.getStock(102L)).thenReturn(stock2);
 
-        orderService.placeOrder(order);
+        orderService.placeOrder(order1);
 
-        assertEquals(3, stock1.getStock().intValue());
-        assertEquals(13, stock2.getStock().intValue());
-
-        verify(stockDao, times(1)).save(stock1);
-        verify(stockDao, times(1)).save(stock2);
-        verify(orderDao, times(1)).save(order);
+        verify(stockService, times(2)).changeStockToReserved(anyLong(), anyInt());
+        verify(orderItemDao, times(1)).insertOrderItems(order1);
+        verify(orderDao, times(1)).save(order1);
         verify(cartService, times(1)).clear();
     }
 
     @Test(expected = OutOfStockException.class)
     public void testPlaceOrderOutOfStock() {
-        orderService.placeOrder(order);
+        Stock stock1 = new Stock(phone1, 0, 0);
+        Stock stock2 = new Stock(phone2, 0, 0);
 
-        verify(stockDao, times(1)).get(phone1.getId());
-        verify(stockDao, times(2)).get(phone2.getId());
+        when(stockService.getStock(101L)).thenReturn(stock1);
+        when(stockService.getStock(102L)).thenReturn(stock2);
+
+        orderService.placeOrder(order1);
+
+        verify(stockService, times(1)).getStock(phone1.getId());
+        verify(stockService, times(2)).getStock(phone2.getId());
         verify(cartService, times(1)).remove(phone1.getId());
         verify(cartService, times(1)).remove(phone2.getId());
     }
 
     @Test
+    public void testUpdateOrderStatusToDelivered() {
+        when(orderDao.getById(1L)).thenReturn(Optional.of(order1));
+        orderService.updateOrderStatus(1L, OrderStatus.DELIVERED);
+
+        verify(order1).setStatus(OrderStatus.DELIVERED);
+        verify(stockService).removeReserved(phone1.getId(), 11);
+        verify(stockService).removeReserved(phone2.getId(), 12);
+        verify(orderDao).save(order1);
+    }
+
+    @Test
+    public void testUpdateOrderStatusToRejected() {
+        when(orderDao.getById(1L)).thenReturn(Optional.of(order1));
+        orderService.updateOrderStatus(1L, OrderStatus.REJECTED);
+
+        verify(order1).setStatus(OrderStatus.REJECTED);
+        verify(stockService).changeReservedToStock(phone1.getId(), 11);
+        verify(stockService).changeReservedToStock(phone2.getId(), 12);
+        verify(orderDao).save(order1);
+    }
+
+    @Test
+    public void testGetOrderByCorrectId() {
+        when(orderDao.getById(101L)).thenReturn(Optional.of(order1));
+        assertEquals(order1, orderService.getById(101L));
+    }
+
+    @Test(expected = OrderNotFoundException.class)
+    public void testGetOrderByIncorrectId() {
+        orderService.getById(-5L);
+        verify(orderDao, times(1)).getById(-5L);
+    }
+
+    @Test
     public void testGetOrderByCorrectSecureId() {
-        when(orderDao.getBySecureId("secureId")).thenReturn(Optional.of(order));
-        assertEquals(order, orderService.getBySecureId("secureId"));
+        when(orderDao.getBySecureId("secureId")).thenReturn(Optional.of(order1));
+        assertEquals(order1, orderService.getBySecureId("secureId"));
     }
 
     @Test(expected = OrderNotFoundException.class)

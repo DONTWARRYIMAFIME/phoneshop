@@ -1,5 +1,6 @@
 package com.es.phoneshop.web.controller.pages;
 
+import com.es.core.exception.PhoneNotFoundException;
 import com.es.core.model.phone.Phone;
 import com.es.core.service.PhoneService;
 import org.springframework.stereotype.Controller;
@@ -9,7 +10,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.Resource;
-import java.util.Optional;
 
 @Controller
 @RequestMapping(value = "/products")
@@ -19,13 +19,13 @@ public class ProductDetailsPageController {
 
     @GetMapping("/{id}")
     public String showProductDetails(@PathVariable Long id, Model model) {
-        Optional<Phone> phoneOptional = phoneService.getPhone(id);
-
-        if (!phoneOptional.isPresent()) {
+        try {
+            Phone phone = phoneService.getPhone(id);
+            model.addAttribute("phone", phone);
+        } catch (PhoneNotFoundException e) {
             return "error/404";
         }
 
-        model.addAttribute("phone", phoneOptional.get());
         return "product";
     }
 }
