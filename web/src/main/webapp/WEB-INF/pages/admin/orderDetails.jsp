@@ -5,7 +5,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <jsp:useBean id="order" scope="request" type="com.es.core.model.order.Order"/>
-<tags:page pageTitle="Order Details" isAdminPage="true">
+<tags:page pageTitle="Order Details">
   <div class="container mt-3 mb-3">
     <div class="d-flex justify-content-between mt-3">
       <h4>Order number: ${order.id}</h4>
