@@ -1,7 +1,7 @@
 package com.es.phoneshop.web.validation;
 
-import com.es.core.dao.StockDao;
 import com.es.core.model.phone.Stock;
+import com.es.core.service.StockService;
 import com.es.phoneshop.web.dto.CartItemDto;
 import com.es.phoneshop.web.dto.CartItemListDto;
 import org.springframework.stereotype.Component;
@@ -11,12 +11,11 @@ import org.springframework.validation.Validator;
 
 import javax.annotation.Resource;
 import java.util.List;
-import java.util.Optional;
 
 @Component
 public class CartItemListDtoValidator implements Validator {
     @Resource
-    private StockDao stockDao;
+    private StockService stockService;
 
     @Override
     public boolean supports(Class<?> aClass) {
@@ -34,12 +33,12 @@ public class CartItemListDtoValidator implements Validator {
 
             Long quantity = cartItemDto.getQuantity();
             if (quantity != null && quantity < 1) {
-                errors.rejectValue("cartItems[" + i + "].quantity", "validation.lessThenOne");
+                errors.rejectValue("cartItems[" + i + "].quantity", "validation.quantity.lessThanOne");
             }
 
-            Optional<Stock> stock = stockDao.get(cartItemDto.getId());
-            if (cartItemDto.getQuantity() > stock.map(Stock::getStock).orElse(0)) {
-                errors.rejectValue("cartItems[" + i + "].quantity", "validation.outOfStock");
+            Stock stock = stockService.getStock(cartItemDto.getId());
+            if (cartItemDto.getQuantity() > stock.getStock()) {
+                errors.rejectValue("cartItems[" + i + "].quantity", "validation.quantity.outOfStock");
             }
         }
     }

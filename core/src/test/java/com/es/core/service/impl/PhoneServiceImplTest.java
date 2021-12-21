@@ -36,7 +36,7 @@ public class PhoneServiceImplTest {
 
     @Test
     public void testGetPhone() {
-        phoneService.getPhone(100L);
+        phoneService.getPhoneById(100L);
 
         verify(phoneDao, times(1)).get(100L);
     }

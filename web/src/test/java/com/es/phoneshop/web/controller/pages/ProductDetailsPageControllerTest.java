@@ -13,8 +13,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
-import java.util.Optional;
-
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
@@ -46,7 +44,7 @@ public class ProductDetailsPageControllerTest {
 
     @Test
     public void testShowProductDetails() throws Exception {
-        when(phoneService.getPhone(1L)).thenReturn(phone);
+        when(phoneService.getPhoneById(1L)).thenReturn(phone);
 
         mockMvc.perform(get(URL, "1"))
                 .andExpect(model().attribute("phone", phone))
@@ -55,7 +53,7 @@ public class ProductDetailsPageControllerTest {
 
     @Test
     public void testShowProductNotFound() throws Exception {
-        when(phoneService.getPhone(1L)).thenThrow(PhoneNotFoundException.class);
+        when(phoneService.getPhoneById(1L)).thenThrow(PhoneNotFoundException.class);
 
         mockMvc.perform(get(URL, "1"))
                 .andExpect(view().name("error/404"));

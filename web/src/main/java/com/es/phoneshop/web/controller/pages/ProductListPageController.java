@@ -17,7 +17,6 @@ import java.util.List;
 @Controller
 @RequestMapping (value = "/productList")
 public class ProductListPageController {
-    
     private static final int PHONES_PER_PAGE = 10;
 
     @Resource

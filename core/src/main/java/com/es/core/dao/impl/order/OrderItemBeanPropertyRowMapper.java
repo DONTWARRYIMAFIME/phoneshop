@@ -23,7 +23,7 @@ public class OrderItemBeanPropertyRowMapper extends BeanPropertyRowMapper<OrderI
         OrderItem orderItem = super.mapRow(rs, rowNumber);
 
         Long phoneId = rs.getLong("phoneId");
-        Phone phone = phoneService.getPhone(phoneId);
+        Phone phone = phoneService.getPhoneById(phoneId);
 
         orderItem.setPhone(phone);
 

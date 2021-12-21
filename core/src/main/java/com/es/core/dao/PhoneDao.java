@@ -10,6 +10,7 @@ import java.util.Set;
 
 public interface PhoneDao {
     Optional<Phone> get(Long key);
+    Optional<Phone> getByModel(final String model);
     void save(Phone phone);
     List<Phone> findAll(SearchStructure searchStructure, int offset, int limit);
     void updatePhoneColors(Long phoneId, Set<Color> colors);

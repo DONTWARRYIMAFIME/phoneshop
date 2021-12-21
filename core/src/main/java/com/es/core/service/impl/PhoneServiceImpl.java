@@ -20,8 +20,13 @@ public class PhoneServiceImpl implements PhoneService {
     private ColorDao colorDao;
 
     @Override
-    public Phone getPhone(Long id) {
+    public Phone getPhoneById(Long id) {
         return phoneDao.get(id).orElseThrow(() -> new PhoneNotFoundException(id));
+    }
+
+    @Override
+    public Phone getPhoneByModel(String model) throws PhoneNotFoundException {
+        return phoneDao.getByModel(model).orElseThrow(() -> new PhoneNotFoundException("Phone with MODEL: " + model + " not found"));
     }
 
     @Override

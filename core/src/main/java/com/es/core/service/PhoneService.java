@@ -7,7 +7,8 @@ import com.es.core.model.search.SearchStructure;
 import java.util.List;
 
 public interface PhoneService {
-    Phone getPhone(Long id) throws PhoneNotFoundException;
+    Phone getPhoneById(Long id) throws PhoneNotFoundException;
+    Phone getPhoneByModel(String model) throws PhoneNotFoundException;
     List<Phone> findPhones(SearchStructure search, int offset, int limit);
     void save(Phone phone);
     long count(String query);

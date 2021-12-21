@@ -20,7 +20,7 @@ public class ProductDetailsPageController {
     @GetMapping("/{id}")
     public String showProductDetails(@PathVariable Long id, Model model) {
         try {
-            Phone phone = phoneService.getPhone(id);
+            Phone phone = phoneService.getPhoneById(id);
             model.addAttribute("phone", phone);
         } catch (PhoneNotFoundException e) {
             return "error/404";

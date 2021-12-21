@@ -30,7 +30,7 @@ public class OrderPageController {
         return orderService.createOrder();
     }
 
-    @ModelAttribute("OrderDto")
+    @ModelAttribute("orderDto")
     public OrderDto addOrderDto() {
         return new OrderDto();
     }
@@ -41,7 +41,7 @@ public class OrderPageController {
     }
 
     @PostMapping("/place")
-    public String placeOrder(@ModelAttribute("OrderDto") @Valid OrderDto orderDto,
+    public String placeOrder(@ModelAttribute("orderDto") @Valid OrderDto orderDto,
                              BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             return "order";

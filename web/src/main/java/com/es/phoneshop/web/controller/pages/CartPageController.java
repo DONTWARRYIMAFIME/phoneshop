@@ -24,7 +24,7 @@ public class CartPageController {
     @Resource
     private CartItemListDtoValidator cartItemListDtoValidator;
 
-    @InitBinder("CartItemListDto")
+    @InitBinder("cartItemListDto")
     private void initBinder(WebDataBinder binder) {
         binder.setValidator(cartItemListDtoValidator);
     }
@@ -39,7 +39,7 @@ public class CartPageController {
         return "cart";
     }
 
-    @ModelAttribute("CartItemListDto")
+    @ModelAttribute("cartItemListDto")
     public CartItemListDto addCartItems() {
         List<CartItemDto> cartItems = cartService.getCart().getItems().stream()
                 .map(item -> new CartItemDto(item.getPhone().getId(), item.getQuantity()))
@@ -49,7 +49,7 @@ public class CartPageController {
     }
 
     @PutMapping("/update")
-    public String updateCart(@ModelAttribute("CartItemListDto") @Valid CartItemListDto cartItems,
+    public String updateCart(@ModelAttribute("cartItemListDto") @Valid CartItemListDto cartItems,
                              BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "cart";

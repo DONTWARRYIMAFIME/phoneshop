@@ -25,6 +25,7 @@
                         <span id="cart-items-quantity"></span>
                         <span id="total-price"></span>
                     </a>
+                    <a href="<c:url value="/quickOrder"/>" class="btn btn-outline-primary ml-3">Quick order</a>
                     <a href="<c:url value="/admin/orders"/>" class="btn btn-outline-dark ml-3">Login</a>
                 </div>
             </sec:authorize>

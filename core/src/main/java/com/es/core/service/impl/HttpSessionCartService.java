@@ -1,14 +1,13 @@
 package com.es.core.service.impl;
 
-import com.es.core.dao.PhoneDao;
-import com.es.core.dao.StockDao;
 import com.es.core.exception.OutOfStockException;
-import com.es.core.exception.PhoneNotFoundException;
 import com.es.core.model.cart.Cart;
 import com.es.core.model.cart.CartItem;
 import com.es.core.model.phone.Phone;
 import com.es.core.model.phone.Stock;
 import com.es.core.service.CartService;
+import com.es.core.service.PhoneService;
+import com.es.core.service.StockService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -21,9 +20,9 @@ public class HttpSessionCartService implements CartService {
     @Resource
     private Cart cart;
     @Resource
-    private PhoneDao phoneDao;
+    private PhoneService phoneService;
     @Resource
-    private StockDao stockDao;
+    private StockService stockService;
 
     @Override
     public Cart getCart() {
@@ -32,9 +31,18 @@ public class HttpSessionCartService implements CartService {
 
     @Override
     public void addPhone(Long phoneId, Long quantity) {
-        Phone phone = phoneDao.get(phoneId).orElseThrow(() -> new PhoneNotFoundException(phoneId));
+        Phone phone = phoneService.getPhoneById(phoneId);
+        addPhone(phone, quantity);
+    }
 
-        Long inCartQuantity = findCartItem(phoneId)
+    @Override
+    public void addPhone(String phoneModel, Long quantity) {
+        Phone phone = phoneService.getPhoneByModel(phoneModel);
+        addPhone(phone, quantity);
+    }
+
+    private void addPhone(Phone phone, Long quantity) {
+        Long inCartQuantity = findCartItem(phone.getId())
                 .map(CartItem::getQuantity)
                 .orElse(0L);
 
@@ -47,7 +55,7 @@ public class HttpSessionCartService implements CartService {
             Long phoneId = entry.getKey();
             Long quantity = entry.getValue();
 
-            Phone phone = phoneDao.get(phoneId).orElseThrow(() -> new PhoneNotFoundException(phoneId));
+            Phone phone = phoneService.getPhoneById(phoneId);
             addItemToCart(phone, quantity, 0L);
         }
     }
@@ -66,7 +74,7 @@ public class HttpSessionCartService implements CartService {
         recalculateTotalQuantityAndPrice();
     }
 
-    private Optional<CartItem> findCartItem(Long phoneId) {
+    public Optional<CartItem> findCartItem(Long phoneId) {
         return cart.getItems().stream()
                 .filter(item -> item.getPhone().getId().equals(phoneId))
                 .findAny();
@@ -77,8 +85,8 @@ public class HttpSessionCartService implements CartService {
             throw new IllegalArgumentException("Quantity must be more than 0");
         }
 
-        Optional<Stock> stockOptional = stockDao.get(phone.getId());
-        Long quantityInStock = (long)stockOptional.map(Stock::getStock).orElse(0);
+        Stock stock = stockService.getStock(phone.getId());
+        Long quantityInStock = (long)stock.getStock();
 
         Long requestQuantity = inCartQuantity + quantity;
         if (requestQuantity > quantityInStock) {

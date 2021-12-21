@@ -21,6 +21,7 @@ import java.util.Set;
 @Repository
 public class JdbcPhoneDao extends JdbcAbstractDao<Phone> implements PhoneDao {
     private static final String FIND_PHONE_BY_ID = "SELECT * FROM phones WHERE id = :id";
+    private static final String FIND_PHONE_BY_MODEL = "SELECT * FROM phones WHERE model = :model";
     private static final String FIND_ALL_PHONES = "SELECT * FROM phones " +
             "JOIN stocks on phones.id = stocks.phoneId " +
             "WHERE stocks.stock > 0 AND phones.price IS NOT NULL OFFSET :offset LIMIT :limit";
@@ -73,6 +74,11 @@ public class JdbcPhoneDao extends JdbcAbstractDao<Phone> implements PhoneDao {
     @Override
     public Optional<Phone> get(final Long key) {
         return super.get(FIND_PHONE_BY_ID, new MapSqlParameterSource("id", key), phoneBeanPropertyRowMapper);
+    }
+
+    @Override
+    public Optional<Phone> getByModel(final String model) {
+        return super.get(FIND_PHONE_BY_MODEL, new MapSqlParameterSource("model", model), phoneBeanPropertyRowMapper);
     }
 
     @Override

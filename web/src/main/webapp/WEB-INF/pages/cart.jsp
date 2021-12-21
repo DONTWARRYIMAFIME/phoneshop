@@ -28,7 +28,7 @@
                 </thead>
 
                 <tbody>
-                <form:form method="put" modelAttribute="CartItemListDto" id="update-cart-form">
+                <form:form method="put" modelAttribute="cartItemListDto" id="update-cart-form">
                     <c:forEach var="cartItem" items="${cart.items}" varStatus="status">
                         <tr id="cart-item-${cartItem.phone.id}">
                             <td>${cartItem.phone.brand}</td>
@@ -47,7 +47,7 @@
                             <td><fmt:formatNumber type="currency" value="${cartItem.phone.price}" currencySymbol="$"/></td>
 
                             <td>
-                                <c:set var="cartItems" value="${CartItemListDto.cartItems}"/>
+                                <c:set var="cartItems" value="${cartItemListDto.cartItems}"/>
                                 <c:set var="i" value="${status.index}"/>
 
                                 <form:hidden path="cartItems[${i}].id"/>
@@ -81,5 +81,4 @@
 
         </c:if>
     </div>
-    <script src="<c:url value="/resources/js/exceptionFormatter.js"/>"></script>
 </tags:page>

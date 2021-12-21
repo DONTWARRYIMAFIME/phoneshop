@@ -68,7 +68,7 @@
                 </tbody>
             </table>
 
-            <form:form method="post" modelAttribute="OrderDto" cssClass="pl-3">
+            <form:form method="post" modelAttribute="orderDto" cssClass="pl-3">
                 <c:if test="${not empty outOfStockMessage}">
                     <div class="row mb-3">
                         <div class="col-4 error pl-0">${outOfStockMessage}</div>
